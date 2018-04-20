@@ -6,11 +6,12 @@ class Login extends Component {
   render() {
     return (
 
-        <div className="login-wrapper">
-              <form>
-                test
-              </form>
+        <div className="container-fluid landing-img">
+          <div className="wrapper">
+
+          </div>
         </div>
+        
 
     );
   }
