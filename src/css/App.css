@@ -2,16 +2,15 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 2s linear;
-  height: 90px;
-}
-
 .App-header {
   background-color: #22264b;
   height: 100px;
   padding: 20px;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
 }
 
 .App-title {
@@ -24,6 +23,12 @@
 
 }
 
+
+.nav-wrapper>a{
+  color:white;
+}
+
+
 .landing-img{
   height: 100vh;
   background-image: url('../img/bright-red-sunset.jpg');
@@ -31,17 +36,25 @@
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
-
+  position: relative;
 }
 
+.input-search{
+
+      width: 50%;
+      pointer-events: visible;
+
+}
 .wrapper{
   height: 100%;
-  background: white;
-  opacity: 0.25;
-  box-shadow: 1px 1px 1px 1px grey;
+  background: #a5606042;
+  display: flex;
+justify-content: center;
+align-items: center;
+
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.login-wrapper{
+  height: 100vh;
+  background: rgb(38,38,38);
 }

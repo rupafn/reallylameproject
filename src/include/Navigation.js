@@ -6,11 +6,10 @@ class Navigation extends Component {
   render() {
     return (
 
-        <nav className="nav">
-            <ul>
-        
-            </ul>
-        </nav>
+        <nav className="nav nav-masthead nav-wrapper ">
+            <a className="nav-link active" href="/">Home</a>
+            <a className="nav-link " href="login">Login</a>
+          </nav>
 
     );
   }
