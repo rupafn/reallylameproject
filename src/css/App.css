@@ -45,6 +45,18 @@
       pointer-events: visible;
 
 }
+.input-search>div{
+  display: contents;
+}
+.input-search>div>input{
+  width: 80%;
+    float: left;
+}
+
+.input-search>button{
+
+    float: left;
+}
 .wrapper{
   height: 100%;
   background: #a5606042;
