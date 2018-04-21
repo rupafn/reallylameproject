@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { withScriptjs,
-withGoogleMap,
-GoogleMap,
-Marker, SearchBox, StandaloneSearchBox  } from "react-google-maps";
+import { Button } from 'react-bootstrap';
 
-const _ = require("lodash");
-const { compose, withProps, lifecycle } = require("recompose");
 
 const google = window.google;
 
@@ -28,49 +23,58 @@ class Map extends Component {
 		// console.log(<SearchBox/>);
 	}
 
-  componentWillMount() {
-    const refs = {}
+  onChange() {
 
-    this.setState({
-      places: [],
-      onSearchBoxMounted: ref => {
-        refs.searchBox = ref;
-      },
-      onPlacesChanged: () => {
-        const places = refs.searchBox.getPlaces();
+      console.log(this.state);
+  }
 
-        this.setState({
-          places,
+
+  componentDidMount() {
+    const refs = {};
+
+    let map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13
         });
-      },
-    })
+    let input = document.getElementById('searchTextField');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    this.setState({
+      autocomplete: autocomplete,
+      map: map
+    });
+    autocomplete.addListener('place_changed', ()=>{
+         var place = autocomplete.getPlace();
+         let placeid = place.photos;
+
+         this.setState({
+           photos: place.photos,
+           placeid: place.place_id,
+           hrflink: "photos?placeid="+place.place_id
+         })
+         if (!place.geometry) {
+           return;
+         }
+       });
+     
   }
 
 
   render() {
     return (
-      <div data-standalone-searchbox="">
-        <StandaloneSearchBox
-          ref={props.onSearchBoxMounted}
-          bounds={props.bounds}
-          onPlacesChanged={props.onPlacesChanged}
-        >
+        <div className="form-group form-control">
           <input
+            id="searchTextField"
             type="text"
             className="form-control"
             placeholder="Search for a place"
           />
-        </StandaloneSearchBox>
-        <ol>
-          {props.places.map(({ place_id, formatted_address, geometry: { location } }) =>
-            <li key={place_id}>
-              {formatted_address}
-              {" at "}
-              ({location.lat()}, {location.lng()})
-            </li>
-          )}
-        </ol>
-      </div>
+          <input
+            type="hidden"
+            id="placeid"
+          />
+
+          <a href={this.state.hrflink}  className="btn btn-primary" onClick={this.onChange.bind(this)}>Search</a>
+        </div>
 
     );
   }

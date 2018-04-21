@@ -50,7 +50,7 @@
 }
 .input-search>div>input{
   width: 80%;
-    float: left;
+  float: left;
 }
 
 .input-search>button{
@@ -69,4 +69,19 @@ align-items: center;
 .login-wrapper{
   height: 100vh;
   background: rgb(38,38,38);
+}
+
+.wrapper-photos{
+  padding: 25px;
+}
+
+.lazy-img{
+  display: inline-block;
+
+}
+
+.trvl-img{
+  height:100%;
+  width: 100%;
+  background-size: cover;
 }
