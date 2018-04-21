@@ -3,7 +3,6 @@ import LazyLoad from 'react-lazy-load';
 import { Modal, Button } from 'react-bootstrap';
 import Photomodal from './includes/Photomodal';
 const google = window.google;
-
 class Photos extends Component {
 
   constructor(props){
@@ -19,10 +18,15 @@ class Photos extends Component {
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
+  componentWillMount(){
 
+  }
   componentDidMount(){
 
+      let google = window.google;
+
       let url = window.location.href;
+
       let string = url.split("=");
       let placeid= string[1];
       let map = new google.maps.Map(document.getElementById('map'), {
@@ -32,8 +36,6 @@ class Photos extends Component {
       let service = new google.maps.places.PlacesService(map);
 
       this.getPlaceDetails(service,placeid);
-
-
 
 
   }

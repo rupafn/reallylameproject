@@ -33,6 +33,8 @@ class Map extends Component {
 
   componentDidMount() {
     const refs = {};
+    setTimeout(()=>{
+
     const google=window.google ;
     let map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -33.8688, lng: 151.2195},
@@ -57,6 +59,8 @@ class Map extends Component {
            return;
          }
        });
+
+     }, 1000);
 
   }
 

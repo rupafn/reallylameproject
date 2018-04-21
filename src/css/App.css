@@ -120,7 +120,7 @@ align-items: center;
   opacity: 1;
 }
 .modal-backdrop{
-  background: transparent;
+  background: #00000054;
 }
 
 .trvl-img-modal{
