@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Map from './Map';
 import { GoogleMap, Marker, SearchBox } from "react-google-maps"
 
-class Login extends Component {
+class Landing extends Component {
 
   componentDidMount() {
     // console.log(window.google);
@@ -12,7 +12,7 @@ class Login extends Component {
     return (
 
         <div className="container-fluid landing-img">
-          
+
           <div className="wrapper">
           <form className="input-search">
                   <Map/>
@@ -28,4 +28,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Landing;

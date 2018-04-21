@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
 
-const google = window.google;
+
 
 class Map extends Component {
 
   constructor(props) {
+
 		super(props);
 		let location = {
 			lat: 48.858608,
@@ -19,8 +20,9 @@ class Map extends Component {
 		};
 	}
 
-  componentDidMount() {
+  componentWillMount() {
 		// console.log(<SearchBox/>);
+    const google = window.google;
 	}
 
   onChange() {
@@ -31,7 +33,7 @@ class Map extends Component {
 
   componentDidMount() {
     const refs = {};
-
+    const google=window.google ;
     let map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -33.8688, lng: 151.2195},
           zoom: 13
@@ -55,7 +57,7 @@ class Map extends Component {
            return;
          }
        });
-     
+
   }
 
 

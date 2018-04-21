@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazy-load';
-
+import { Modal, Button } from 'react-bootstrap';
+import Photomodal from './includes/Photomodal';
 const google = window.google;
 
 class Photos extends Component {
@@ -8,9 +9,15 @@ class Photos extends Component {
   constructor(props){
 
     super(props);
-    this.setState({
-      photos:[]
-    });
+    this.state = {
+      photos:[],
+      placename:"test",
+      show: false,
+      url:""
+    };
+
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount(){
@@ -41,7 +48,8 @@ class Photos extends Component {
       }
 
       this.setState({
-        photos: result.photos
+        photos: result.photos,
+        placename: result.name
       });
 
 
@@ -59,23 +67,42 @@ class Photos extends Component {
       return arr;
 
   }
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow(url) {
+   // e.stopPropagation();
+   this.setState({
+     show: true,
+     photo_url:url
+   });
+   console.log(url);
+ }
 
   render() {
   var listItems =null;
    if(this.state!=null ){
      let photos = this.getPhotos();
-     listItems = photos.map((url,i) =>
-         <LazyLoad key={i} className="lazy-img" height={200} width={200} >
-             <div className="trvl-img" style={ { backgroundImage: `url(${url})` } }></div>
-         </LazyLoad>
-     );
+     if(photos){
+       listItems = photos.map((url,i) =>
+           <LazyLoad key={i} className="lazy-img" height={300} width={300}   >
+               <div className="trvl-img" style={ { backgroundImage: `url(${url})` } }  onClick={this.handleShow.bind(this,url)}></div>
+           </LazyLoad>
+       );
+     } else{
+       listItems= []
+     }
+
    }
 
     return (
         <div className="container-fluid">
             <div className="wrapper-photos">
+            <h1 className="f1">{this.state? this.state.placename : ""}</h1>
               {listItems}
 
+        <Photomodal photourl={this.state.photo_url} show={this.state.show} handleClose={this.handleClose.bind(this)}/>
             </div>
         </div>
     );
