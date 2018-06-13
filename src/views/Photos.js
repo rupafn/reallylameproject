@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LazyLoad from 'react-lazy-load';
 import { Modal, Button } from 'react-bootstrap';
-import Photomodal from './includes/Photomodal';
+import Entrymodal from './includes/Entrymodal';
 const google = window.google;
 class Photos extends Component {
 
@@ -104,7 +104,7 @@ class Photos extends Component {
             <h1 className="f1">{this.state? this.state.placename : ""}</h1>
               {listItems}
 
-        <Photomodal photourl={this.state.photo_url} show={this.state.show} handleClose={this.handleClose.bind(this)}/>
+        <Entrymodal photourl={this.state.photo_url} show={this.state.show} handleClose={this.handleClose.bind(this)}/>
             </div>
         </div>
     );

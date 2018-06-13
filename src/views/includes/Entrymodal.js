@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import firebase from 'firebase';
 
 const customStyles = {
   content : {
@@ -11,19 +12,69 @@ const customStyles = {
     transform             : 'translate(-50%, -100%)'
   }
 };
-class Photomodal extends Component {
+class Entrymodal extends Component {
 
   constructor(props) {
 
     super(props);
 
+    let location = {
+			lat: 48.858608,
+			lng: 2.294471
+		};
 
     this.state = {
       tags: [],
       tagStr:[],
       disabled: false,
-      test: null
+      location,
+
     };
+  }
+
+  componentWillMount() {
+		// console.log(<SearchBox/>);
+    const google = window.google;
+	}
+
+  InitMap() {
+
+    const refs = {};
+    setTimeout(()=>{
+
+    const google=window.google ;
+    let map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13
+        });
+    let input = document.getElementById('searchTextField');
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    // this.setState({
+    //   autocomplete: autocomplete,
+    //   map: map
+    // });
+
+    autocomplete.addListener('place_changed', ()=>{
+         var place = autocomplete.getPlace();
+         let placeid = place.photos;
+         console.log(place.geometry.location.lat());
+
+         if (!place.geometry) {
+           return;
+         }
+         let location = {
+           lat: place.geometry.location.lat(),
+           lng: place.geometry.location.lng(),
+        };
+         this.setState({
+           location
+         })
+       });
+
+     }, 1000);
+
   }
 
    removeTag(tag, e){
@@ -56,7 +107,6 @@ class Photomodal extends Component {
     //if more than 3 tags dont allow
 
     if (e.key === 'Enter') {
-
         let input = e.target.value;
         let tags = this.state.tagStr;
         tags.push(input);
@@ -70,8 +120,6 @@ class Photomodal extends Component {
           tagStr: tags,
           test: input
         });
-
-
 
       }
       if(this.state.tagStr.length>=3){
@@ -87,8 +135,23 @@ class Photomodal extends Component {
       // <p className="catTags">test <i className="fa fa-times cancelTag"></i></p>
   }
 
+//save details of location in firebase
+  makeEntry (){
+        let lat = this.state.location.lat;
+        let lng = this.state.location.lng;
+        let inputplace = document.getElementById('placename').value;
+        let inputlocation = document.getElementById('searchTextField').value;
+        //get categoreies
+        //insert into firebase
+        
+
+
+  }
 
   render() {
+    if(this.props.show){
+      this.InitMap();
+    }
     var listItems = this.state.tags;
     return (
 
@@ -99,9 +162,9 @@ class Photomodal extends Component {
         aria-labelledby="contained-modal-title"
         style={customStyles}
       >
-        <Modal.Header closeButton>
+        <Modal.Header >
           <Modal.Title id="contained-modal-title">
-                Enter the details of your discovery.
+                Enter details of your discovery.
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -109,17 +172,31 @@ class Photomodal extends Component {
             <div className="form-control entry-form">
               <input
                 type="text"
+                id="placename"
                 className=" text-center input-css"
                 placeholder="Name of Eatery"
                 required="true"
               />
               </div>
               <div className="form-control entry-form">
+
               <input
+                id="searchTextField"
                 type="text"
                 className=" text-center input-css"
                 placeholder="Location"
                 required="true"
+              />
+              <input
+                type="hidden"
+                id="lat"
+                value= {this.state.location.lat}
+              />
+              <input
+                type="hidden"
+                id="lng"
+                value= {this.state.location.lng}
+
               />
               </div>
 
@@ -135,6 +212,10 @@ class Photomodal extends Component {
                 onKeyPress={this.onChange.bind(this)}
                 disabled = {(this.state.disabled)? "disabled" : ""}
               />
+
+              </div>
+              <div className="enter-halal">
+              <Button  className=" btn btn-primary halal-entry  "  onClick={this.makeEntry.bind(this)}>Enter</Button>
               </div>
 
         </div>
@@ -148,4 +229,4 @@ class Photomodal extends Component {
   }
 }
 
-export default Photomodal;
+export default Entrymodal;

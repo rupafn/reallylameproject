@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import Photomodal from '../views/includes/Photomodal';
+import Entrymodal from '../views/includes/Entrymodal';
 import logo from '../logo.svg';
 import '../css/App.css';
 
@@ -27,13 +27,15 @@ class Navigation extends Component {
 
   onChange() {
     //query for places to eat in this location
+    this.InitMap();
     this.setState({
       show: true
     });
   }
 
 
-  componentDidMount() {
+  InitMap() {
+
     const refs = {};
     setTimeout(()=>{
 
@@ -86,7 +88,7 @@ class Navigation extends Component {
       <div className=" form-group form-control form-control-cust">
         <p>Find a halal eatery near you</p>
         <input
-          id="searchTextField"
+
           type="text"
           className="form-control text-center"
           placeholder="Search for a place "
@@ -98,7 +100,7 @@ class Navigation extends Component {
         />
 
         <Button  className="btn btn-primary halal-entry" onClick={this.onChange.bind(this)}>Enter my halal place</Button>
-        <Photomodal
+        <Entrymodal
             show={this.state.show}
             handleClose={this.handleClose.bind(this)}/>
        </div>

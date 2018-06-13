@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import Photomodal from './includes/Photomodal';
+
 
 
 
@@ -40,7 +40,7 @@ class Map extends Component {
           center: {lat: -33.8688, lng: 151.2195},
           zoom: 13
         });
-    let input = document.getElementById('searchTextField');
+    let input = document.getElementById('searchTextField1');
     var autocomplete = new google.maps.places.Autocomplete(input);
     this.setState({
       autocomplete: autocomplete,
@@ -69,7 +69,7 @@ class Map extends Component {
     return (
         <div className="form-group form-control">
           <input
-            id="searchTextField"
+            id="searchTextField1"
             type="text"
             className="form-control"
             placeholder="Search for a place"

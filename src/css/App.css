@@ -255,3 +255,16 @@ margin-right: 10px;
   padding: 2px;
   border-radius: 50%;
 }
+
+.pac-container {
+        z-index: 10000 !important;
+        margin-top: 5px;
+        box-shadow: 0px 0px 0px 1px #8588862b;
+
+
+    }
+
+.enter-halal {
+  display: flex;
+  justify-content: center;
+}
