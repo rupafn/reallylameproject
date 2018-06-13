@@ -70,6 +70,8 @@ class Navigation extends Component {
     this.setState({ show: false });
   }
 
+
+
   handleShow() {
    // e.stopPropagation();
    this.setState({

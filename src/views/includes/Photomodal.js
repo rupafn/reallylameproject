@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+const app = firebase.initializeApp({
+    apiKey: "AIzaSyBkMNYEPhErsL1kTSBuX0TK-uv0mbiNLbY",
+    authDomain: "reallylameprojec-1524211167233.firebaseapp.com",
+    databaseURL: "https://reallylameprojec-1524211167233.firebaseio.com",
+    projectId: "reallylameprojec-1524211167233",
+    storageBucket: "reallylameprojec-1524211167233.appspot.com",
+    messagingSenderId: "43717583867"
+  });
 
 const customStyles = {
   content : {
@@ -22,6 +33,9 @@ class Photomodal extends Component {
       tags: [],
       tagStr:[],
       disabled: false,
+      inputError: false,
+      location: "",
+      placename:"",
       test: null
     };
   }
@@ -51,7 +65,43 @@ class Photomodal extends Component {
 
    }
 
-  onChange(e) {
+   checkErrors(){
+      let flag = true;
+      if(!this.state.placename){
+        flag = false;
+
+
+      }
+      if(!this.state.location){
+        flag = false;
+      }
+      if(!this.state.tagStr){
+        flag = false;
+      }
+   }
+
+
+   handleSave(){
+     console.log("Teskltjslkt");
+     this.checkErrors();
+
+     // firebase.database().ref('/places').push({
+     //   placeName: name,
+     // });
+
+   }
+
+   onChange(e){
+     let key = e.target.name;
+     let value = e.target.value;
+     let obj ={};
+     obj[key] = value
+     this.setState({
+      [key]:value
+     });
+   }
+
+  onChangeTag(e) {
     //query for places to eat in this location
     //if more than 3 tags dont allow
 
@@ -70,9 +120,6 @@ class Photomodal extends Component {
           tagStr: tags,
           test: input
         });
-
-
-
       }
       if(this.state.tagStr.length>=3){
         this.setState({
@@ -106,12 +153,16 @@ class Photomodal extends Component {
         </Modal.Header>
         <Modal.Body>
         <div className="trvl-description-modal">
+        <form>
             <div className="form-control entry-form">
               <input
                 type="text"
                 className=" text-center input-css"
                 placeholder="Name of Eatery"
                 required="true"
+                name= "placename"
+              
+                onChange = {this.onChange.bind(this)}
               />
               </div>
               <div className="form-control entry-form">
@@ -120,6 +171,8 @@ class Photomodal extends Component {
                 className=" text-center input-css"
                 placeholder="Location"
                 required="true"
+                name = "location"
+                onChange = {this.onChange.bind(this)}
               />
               </div>
 
@@ -132,11 +185,12 @@ class Photomodal extends Component {
                 className="text-center "
                 placeholder="Categories (Max 3)"
                 required="true"
-                onKeyPress={this.onChange.bind(this)}
+                onKeyPress={this.onChangeTag.bind(this)}
                 disabled = {(this.state.disabled)? "disabled" : ""}
               />
               </div>
-
+                <Button className="btn btn-primary" onClick={this.handleSave.bind(this)}>Save</Button>
+              </form>
         </div>
         </Modal.Body>
         <Modal.Footer>
