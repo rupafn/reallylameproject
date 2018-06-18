@@ -4,6 +4,10 @@ import Entrymodal from '../views/includes/Entrymodal';
 import logo from '../logo.svg';
 import '../css/App.css';
 
+import firebase from 'firebase';
+import 'firebase/database';
+
+
 class Navigation extends Component {
   constructor(props) {
 
@@ -15,11 +19,16 @@ class Navigation extends Component {
 
 
 		this.state = {
+      places:[],
 			location,
       show: false,
+      searchCountry:""
 		};
 	}
 
+  componentDidMount(){
+    this.InitMap();
+  }
   componentWillMount() {
 		// console.log(<SearchBox/>);
     const google = window.google;
@@ -27,10 +36,35 @@ class Navigation extends Component {
 
   onChange() {
     //query for places to eat in this location
-    this.InitMap();
+
     this.setState({
       show: true
     });
+  }
+
+  getEateryNearby(){
+
+    let textinput = document.getElementById('searchTextField').value;
+
+    if(textinput.length>0){
+      firebase.database().ref('/places' ).orderByChild("country").equalTo(this.state.searchCountry).on("value", (snapshot)=>{
+          // console.log(snapshot.val());
+          if(Object.values(snapshot.val()).length>0){
+            this.props.restorePlaces(snapshot.val());
+
+          }
+      });
+    } else{
+      firebase.database().ref('/places' ).once('value').then((snapshot)=> {
+        if(Object.values(snapshot.val()).length>0){
+          this.props.restorePlaces(snapshot.val());
+
+        }
+
+       });
+    }
+
+
   }
 
 
@@ -52,13 +86,16 @@ class Navigation extends Component {
     });
     autocomplete.addListener('place_changed', ()=>{
          var place = autocomplete.getPlace();
-         let placeid = place.photos;
 
-         this.setState({
-           photos: place.photos,
-           placeid: place.place_id,
-           hrflink: "photos?placeid="+place.place_id
-         })
+         console.log(place);
+         //get country
+         var filtered_array = place.address_components.filter((address_component) =>{
+               return address_component.types.includes("country");
+           });
+        var country = filtered_array.length ? filtered_array[0].long_name: "";
+        this.setState({
+          searchCountry: country
+        });
          if (!place.geometry) {
            return;
          }
@@ -88,27 +125,25 @@ class Navigation extends Component {
       <div className=" form-group form-control form-control-cust">
         <p>Find a halal eatery near you</p>
         <input
-
+          id = "searchTextField"
           type="text"
           className="form-control text-center"
-          placeholder="Search for a place "
-          onKeyPress={this.onChange.bind(this)}
+          placeholder="Discover places near you"
         />
         <input
           type="hidden"
           id="placeid"
         />
 
-        <Button  className="btn btn-primary halal-entry" onClick={this.onChange.bind(this)}>Enter my halal place</Button>
+        <Button  className="btn btn-primary halal-entry" onClick={this.getEateryNearby.bind(this)}>Search</Button>
+
+        <br/>
+        <p className="or-css">OR</p>
+        <Button  className="btn btn-primary halal-entry" onClick={this.onChange.bind(this)}>Enter a halal restaurant</Button>
         <Entrymodal
             show={this.state.show}
             handleClose={this.handleClose.bind(this)}/>
        </div>
-
-
-
-
-
 
     );
   }

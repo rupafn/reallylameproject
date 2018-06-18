@@ -8,8 +8,8 @@ class Header extends Component {
     return (
 
         <header className="App-header">
-          
-          <Navigation/>
+
+          <Navigation restorePlaces= {this.props.restorePlaces}/>
         </header>
 
     );

@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import firebase from 'firebase';
+import 'firebase/database';
+
+const app = firebase.initializeApp({
+    apiKey: "AIzaSyBkMNYEPhErsL1kTSBuX0TK-uv0mbiNLbY",
+    authDomain: "reallylameprojec-1524211167233.firebaseapp.com",
+    databaseURL: "https://reallylameprojec-1524211167233.firebaseio.com",
+    projectId: "reallylameprojec-1524211167233",
+    storageBucket: "reallylameprojec-1524211167233.appspot.com",
+    messagingSenderId: "43717583867"
+  });
+
 
 const customStyles = {
   content : {
@@ -18,7 +29,7 @@ class Entrymodal extends Component {
 
     super(props);
 
-    let location = {
+    let latlng = {
 			lat: 48.858608,
 			lng: 2.294471
 		};
@@ -27,7 +38,11 @@ class Entrymodal extends Component {
       tags: [],
       tagStr:[],
       disabled: false,
-      location,
+      latlng,
+      location: "",
+      placename:"",
+      country:"",
+      inputError: false,
 
     };
   }
@@ -64,18 +79,28 @@ class Entrymodal extends Component {
          if (!place.geometry) {
            return;
          }
-         let location = {
+         let latlng = {
            lat: place.geometry.location.lat(),
            lng: place.geometry.location.lng(),
         };
+        ///set country
+        var filtered_array = place.address_components.filter((address_component) =>{
+              return address_component.types.includes("country");
+          });
+          var country = filtered_array.length ? filtered_array[0].long_name: "";
+
+
          this.setState({
-           location
+           latlng,
+           country: country
          })
        });
 
      }, 1000);
 
   }
+
+
 
    removeTag(tag, e){
 
@@ -102,7 +127,62 @@ class Entrymodal extends Component {
 
    }
 
-  onChange(e) {
+   checkErrors(){
+      let flag = false;
+      if(this.state.placename==""){
+        flag = true;
+      }
+      if(this.state.location==""){
+        flag = true;
+      }
+      if(this.state.tagStr.length==0){
+        flag = true;
+      }
+      if(flag){
+        this.setState({
+          inputError:flag
+        });
+        return false
+      }
+      return true;
+
+   }
+
+
+   handleSave(){
+
+     if(this.checkErrors()){
+       firebase.database().ref('/places').push({
+         placename : this.state.placename,
+         latlng : this.state.latlng,
+         locationName : this.state.location,
+         country: this.state.country,
+         tags : this.state.tagStr,
+       }).then(() =>{
+           alert("location saved successfully");
+           this.props.handleClose();
+       }).catch((e)=>{
+         alert("Error saving");
+       });
+     }
+
+
+
+   }
+
+   onChange(e){
+     let key = e.target.name;
+     let value = e.target.value;
+     let obj ={};
+     obj[key] = value
+     this.setState({
+      [key]:value
+     });
+
+   }
+
+
+  onChangeTag(e) {
     //query for places to eat in this location
     //if more than 3 tags dont allow
 
@@ -137,13 +217,13 @@ class Entrymodal extends Component {
 
 //save details of location in firebase
   makeEntry (){
-        let lat = this.state.location.lat;
-        let lng = this.state.location.lng;
+        let lat = this.state.latlng.lat;
+        let lng = this.state.latlng.lng;
         let inputplace = document.getElementById('placename').value;
         let inputlocation = document.getElementById('searchTextField').value;
         //get categoreies
         //insert into firebase
-        
+
 
 
   }
@@ -169,33 +249,37 @@ class Entrymodal extends Component {
         </Modal.Header>
         <Modal.Body>
         <div className="trvl-description-modal">
-            <div className="form-control entry-form">
+            <div className={`form-control entry-form ${this.state.placename=="" && this.state.inputError==true  ? 'error' : ''}`}>
               <input
                 type="text"
                 id="placename"
                 className=" text-center input-css"
                 placeholder="Name of Eatery"
                 required="true"
+                name= "placename"
+                onChange = {this.onChange.bind(this)}
               />
               </div>
-              <div className="form-control entry-form">
+              <div className={`form-control entry-form ${this.state.location=="" && this.state.inputError==true  ? 'error' : ''}`}>
 
               <input
                 id="searchTextField"
                 type="text"
-                className=" text-center input-css"
+                className="text-center input-css "
                 placeholder="Location"
                 required="true"
+                name = "location"
+                onChange = {this.onChange.bind(this)}
               />
               <input
                 type="hidden"
                 id="lat"
-                value= {this.state.location.lat}
+                value= {this.state.latlng.lat}
               />
               <input
                 type="hidden"
                 id="lng"
-                value= {this.state.location.lng}
+                value= {this.state.latlng.lng}
 
               />
               </div>
@@ -209,15 +293,22 @@ class Entrymodal extends Component {
                 className="text-center "
                 placeholder="Categories (Max 3)"
                 required="true"
-                onKeyPress={this.onChange.bind(this)}
+                onKeyPress={this.onChangeTag.bind(this)}
                 disabled = {(this.state.disabled)? "disabled" : ""}
               />
 
               </div>
               <div className="enter-halal">
-              <Button  className=" btn btn-primary halal-entry  "  onClick={this.makeEntry.bind(this)}>Enter</Button>
+              <Button  className=" btn btn-primary halal-entry  "  onClick={this.handleSave.bind(this)}>Save</Button>
               </div>
+              <div className="error-wrapper">
+              {this.state.placename=="" && this.state.inputError?<p className="error-text">*Please enter place name.</p>:""}
 
+              {this.state.location=="" && this.state.inputError?<p className="error-text">*Please enter location.</p>:""}
+
+              {this.state.tagStr.length==0 && this.state.inputError?<p className="error-text">*Please enter maximum 3 categories.</p>:""}
+
+              </div>
         </div>
         </Modal.Body>
         <Modal.Footer>

@@ -55,7 +55,7 @@ right: 0;
 
 .landing-img{
   height: 100vh;
-  background-image: url('../img/bright-red-sunset.jpg');
+
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -88,8 +88,12 @@ right: 0;
   height: 100%;
   display: flex;
 justify-content: center;
-align-items: center;
 
+
+}
+
+.wrapper>div{
+  width: 100%;
 }
 
 .login-wrapper{
@@ -198,10 +202,14 @@ align-items: center;
 }
 .halal-entry{
    margin-top: 15px;
+   margin-bottom: 15px;
    background-color: #2d793a;
    border-color: #2d793a;
 }
 
+.or-css{
+  margin-top: 15px;
+}
 
 .halal-entry:hover{
   background-color: #2d793a;
@@ -267,4 +275,44 @@ margin-right: 10px;
 .enter-halal {
   display: flex;
   justify-content: center;
+}
+
+.error{
+   box-shadow: 0px 0px 2px 0px red;
+}
+
+.error-wrapper{
+  margin-top: 25px;
+}
+.error-text{
+  color:red;
+  font-size: 12px;
+  line-height: 2px;
+}
+
+.listplaces>li{
+  list-style-type: none;;
+}
+.place{
+  display: block;
+  text-align: left;
+  padding: 25px;
+  width: 100%;
+  box-shadow: 0px 1px 0px 0px #d4cecec2;
+
+}
+
+.place-name{
+  background: white;
+  margin-bottom: 25px;
+
+}
+
+.place-tags>p{
+  display: inline-block;
+  margin-right: 25px;
+  background: #1c821c;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: white;
 }
