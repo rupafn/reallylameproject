@@ -62,7 +62,7 @@ class Entrymodal extends Component {
           center: {lat: -33.8688, lng: 151.2195},
           zoom: 13
         });
-    let input = document.getElementById('searchTextField');
+    let input = document.getElementById('searchLocation');
 
     var autocomplete = new google.maps.places.Autocomplete(input);
 
@@ -220,7 +220,7 @@ class Entrymodal extends Component {
         let lat = this.state.latlng.lat;
         let lng = this.state.latlng.lng;
         let inputplace = document.getElementById('placename').value;
-        let inputlocation = document.getElementById('searchTextField').value;
+        let inputlocation = document.getElementById('searchLocation').value;
         //get categoreies
         //insert into firebase
 
@@ -263,7 +263,7 @@ class Entrymodal extends Component {
               <div className={`form-control entry-form ${this.state.location=="" && this.state.inputError==true  ? 'error' : ''}`}>
 
               <input
-                id="searchTextField"
+                id="searchLocation"
                 type="text"
                 className="text-center input-css "
                 placeholder="Location"

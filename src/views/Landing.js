@@ -31,7 +31,7 @@ class Landing extends Component {
 
   componentDidMount() {
     // get places
-    return firebase.database().ref('/places' ).once('value').then((snapshot)=> {
+    return firebase.database().ref('/places' ).on('value', (snapshot)=> {
       if(Object.values(snapshot.val()).length>0){
         this.setState({
           places: Object.values(snapshot.val())
