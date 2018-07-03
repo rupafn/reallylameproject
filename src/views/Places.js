@@ -28,7 +28,7 @@ class Places extends Component {
     let listItems = this.props.places.map((place,key) =>
       <li key={key}>
       <div className="place">
-            <div className="place-name"><h2>{place.placename} ({place.locationName})</h2></div>
+            <div className="place-name"><h4>{place.placename} ({place.locationName})</h4></div>
             <div className="place-tags">
              {place.tags[0]?<p>{place.tags[0]}</p>:""}
              {place.tags[1]?<p>{place.tags[1]}</p>:""}

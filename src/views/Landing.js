@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../include/Header';
+import Selectors from './Selectors';
 import Map from './Map';
 import { GoogleMap, Marker, SearchBox } from "react-google-maps"
 import firebase from 'firebase';
@@ -21,8 +22,6 @@ class Landing extends Component {
 
 
   restorePlaces(places){
-    console.log("restoring");
-    console.log(places);
      this.setState({
        places: Object.values(places)
      });
@@ -47,9 +46,10 @@ class Landing extends Component {
         <div className="container-fluid landing-img">
           <Header restorePlaces={this.restorePlaces.bind(this)} places = {this.state.places}/>
           <div className="wrapper">
-
-                <Map places = {this.state.places}/>
-
+              <div className = "wrapper-front">
+                    <Selectors/>
+              </div>
+              <Map  places = {this.state.places} />
           </div>
 
         </div>

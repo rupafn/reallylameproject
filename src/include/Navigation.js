@@ -123,6 +123,9 @@ class Navigation extends Component {
 
 
       <div className=" form-group form-control form-control-cust">
+      <Button type="button" className="pull-left menu" data-toggle="modal" data-target="#exampleModal">
+        <i className="fa fa-user fa-lg"></i>
+      </Button>
         <p>Find a halal eatery near you</p>
         <input
           id = "searchTextField"
@@ -144,6 +147,10 @@ class Navigation extends Component {
             show={this.state.show}
             handleClose={this.handleClose.bind(this)}/>
        </div>
+
+
+
+
 
     );
   }
