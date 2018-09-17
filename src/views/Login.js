@@ -7,12 +7,7 @@ class Login extends Component {
 
   componentWillMount(){
     var config = {
-        apiKey: "AIzaSyBDTdGg-agdNGAM29hZXx6Vfz-m54qkdtc",
-        authDomain: "myfirstapp-8fecb.firebaseapp.com",
-        databaseURL: "https://m...content-available-to-author-only...o.com",
-        projectId: "myfirstapp-8fecb",
-        storageBucket: "myfirstapp-8fecb.appspot.com",
-        messagingSenderId: "638414867485"
+        //firebase config
       };
       firebase.initializeApp(config);
   }
